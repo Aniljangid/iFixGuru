@@ -32,4 +32,4 @@ jobs:
         env:
           WASMER_TOKEN: ${{ secrets.WASMER_TOKEN }}
         run: |
-          wasmer deploy --non-interactive --token=$WASMER_TOKEN
+          wasmer deploy --non-interactive --token=$WASMER_TOKEN --owner=aniljangid
