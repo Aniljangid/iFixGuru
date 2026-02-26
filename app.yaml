@@ -1,4 +1,3 @@
 kind: wasmer.io/App.v0
 name: ifixguru
-description: iFixGuru static site
 package: aniljangid/ifixguru

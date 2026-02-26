@@ -2,16 +2,9 @@
 name = "aniljangid/ifixguru"
 version = "0.1.0"
 description = "iFixGuru static site"
-license = "MIT"
 
-[[module]]
-name = "static-fs-module"
-source = "wasmer/static-fs-runner"
+[dependencies]
+"sharrattj/static-web-server" = "1"
 
-[[command]]
-name = "serve"
-module = "static-fs-module"
-runner = "https://wasmer.io/runners/static-fs-runner"
-
-[command.annotations.static-fs-runner]
-public-dir = "dist"
+[fs]
+public = "dist"
