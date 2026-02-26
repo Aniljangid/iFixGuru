@@ -1,0 +1,34 @@
+name: Deploy to Wasmer
+
+on:
+  push:
+    branches:
+      - main # Change this to your default branch if it's different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build site
+        run: npm run build
+
+      - name: Install Wasmer CLI
+        run: |
+          curl https://get.wasmer.io -sSfL | sh
+          echo "$HOME/.wasmer/bin" >> $GITHUB_PATH
+
+      - name: Deploy to Wasmer
+        env:
+          WASMER_TOKEN: ${{ secrets.WASMER_TOKEN }}
+        run: wasmer deploy --non-interactive --token=$WASMER_TOKEN
