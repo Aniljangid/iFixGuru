@@ -26,10 +26,26 @@ contactForm.addEventListener('submit', async function (e) {
         });
 
         if (response.ok) {
-            formStatus.textContent = "Thanks! We've received your request and will get back to you soon.";
+            // WhatsApp redirection logic
+            const name = formData.get('name');
+            const device = formData.get('device');
+            const issue = formData.get('message');
+            const phone = "8050696288";
+            
+            const waMessage = `Hi iFixGuru! My name is ${name}. I need help with my ${device}. Issue: ${issue}`;
+            const encodedMessage = encodeURIComponent(waMessage);
+            const waUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+
+            formStatus.textContent = "Thanks! Redirecting you to WhatsApp for instant confirmation...";
             formStatus.style.color = "#28a745";
             formStatus.style.display = "block";
+            
             contactForm.reset();
+
+            // Delay slightly to show success message before redirect
+            setTimeout(() => {
+                window.open(waUrl, '_blank');
+            }, 1500);
         } else {
             const data = await response.json();
             if (Object.hasOwn(data, 'errors')) {
