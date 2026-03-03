@@ -1,6 +1,6 @@
 [package]
 name = "aniljangid/ifixguru"
-version = "0.1.7"
+version = "0.1.8"
 description = "iFixGuru static site"
 
 [dependencies]
