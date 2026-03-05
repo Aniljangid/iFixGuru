@@ -1,3 +1,5 @@
-kind: wasmer.io/App.v0
 name: ifixguru
+app_id: da_KN4IZtyUOg0v
+owner: aniljangid
 package: .
+kind: wasmer.io/App.v0

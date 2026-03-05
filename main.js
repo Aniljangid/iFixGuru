@@ -9,9 +9,18 @@ const submitBtn = document.getElementById('submit-button');
 contactForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
+    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY;
+
+    if (!accessKey) {
+        formStatus.textContent = "Configuration error: Web3Forms access key is missing. Please check your .env file.";
+        formStatus.style.color = "#dc3545";
+        formStatus.style.display = "block";
+        return;
+    }
+
     const formData = new FormData(contactForm);
     // Securely inject the access key from environment variables
-    formData.append('access_key', import.meta.env.VITE_WEB3FORMS_KEY);
+    formData.append('access_key', accessKey);
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
@@ -31,7 +40,7 @@ contactForm.addEventListener('submit', async function (e) {
             const device = formData.get('device');
             const issue = formData.get('message');
             const phone = "8050696288";
-            
+
             const waMessage = `Hi iFixGuru! My name is ${name}. I need help with my ${device}. Issue: ${issue}`;
             const encodedMessage = encodeURIComponent(waMessage);
             const waUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
@@ -39,7 +48,7 @@ contactForm.addEventListener('submit', async function (e) {
             formStatus.textContent = "Thanks! Redirecting you to WhatsApp for instant confirmation...";
             formStatus.style.color = "#28a745";
             formStatus.style.display = "block";
-            
+
             contactForm.reset();
 
             // Delay slightly to show success message before redirect
@@ -48,8 +57,8 @@ contactForm.addEventListener('submit', async function (e) {
             }, 1500);
         } else {
             const data = await response.json();
-            if (Object.hasOwn(data, 'errors')) {
-                formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+            if (data && data.errors) {
+                formStatus.textContent = data.errors.map(error => error.message).join(", ");
             } else {
                 formStatus.textContent = "Oops! There was a problem submitting your form.";
             }
@@ -57,7 +66,8 @@ contactForm.addEventListener('submit', async function (e) {
             formStatus.style.display = "block";
         }
     } catch (error) {
-        formStatus.textContent = "Oops! There was a problem submitting your form.";
+        console.error('Submission error:', error);
+        formStatus.textContent = "Oops! There was a problem submitting your form. Please check your internet connection.";
         formStatus.style.color = "#dc3545";
         formStatus.style.display = "block";
     } finally {
